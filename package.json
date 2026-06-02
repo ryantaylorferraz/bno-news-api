@@ -1,0 +1,33 @@
+{
+  "name": "bno-news-api",
+  "version": "0.1.0",
+  "description": "BNO News — Backend API (Fastify + Prisma + PostgreSQL)",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.0",
+    "@prisma/client": "^5.14.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.14.0",
+    "prisma": "^5.14.0",
+    "tsx": "^4.15.6",
+    "typescript": "^5.4.5"
+  }
+}
