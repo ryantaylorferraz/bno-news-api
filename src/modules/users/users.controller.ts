@@ -4,6 +4,7 @@ import {
   getUserById,
   createUser,
   updateUser,
+  deleteUser,
   CreateUserSchema,
   UpdateUserSchema,
 } from './users.service';
@@ -32,4 +33,12 @@ export async function updateUserHandler(
 ) {
   const input = UpdateUserSchema.parse(request.body);
   return reply.send(await updateUser(request.params.id, input));
+}
+
+export async function deleteUserHandler(
+  request: FastifyRequest<{ Params: IdParams }>,
+  reply: FastifyReply,
+) {
+  await deleteUser(request.params.id);
+  return reply.status(204).send();
 }

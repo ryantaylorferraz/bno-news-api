@@ -6,6 +6,7 @@ import {
   getAuthorByIdHandler,
   createAuthorHandler,
   updateAuthorHandler,
+  deleteAuthorHandler,
 } from './authors.controller';
 
 type Id   = { Params: { id: string } };
@@ -18,6 +19,7 @@ export async function authorRoutes(app: FastifyInstance) {
   app.get<Id>  ('/:id',        getAuthorByIdHandler);
 
   // ── Protected ─────────────────────────────────────────────────────────────
-  app.post(      '/',    { preHandler: [authenticate] }, createAuthorHandler);
-  app.patch<Id>( '/:id', { preHandler: [authenticate] }, updateAuthorHandler);
+  app.post(        '/',    { preHandler: [authenticate] }, createAuthorHandler);
+  app.patch<Id>(   '/:id', { preHandler: [authenticate] }, updateAuthorHandler);
+  app.delete<Id>(  '/:id', { preHandler: [authenticate] }, deleteAuthorHandler);
 }

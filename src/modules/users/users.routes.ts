@@ -1,19 +1,21 @@
 import { FastifyInstance } from 'fastify';
-import { authenticate } from '../../middleware/auth';
+import { authenticate, authorizeAdmin } from '../../middleware/auth';
 import {
   listUsersHandler,
   getUserByIdHandler,
   createUserHandler,
   updateUserHandler,
+  deleteUserHandler,
 } from './users.controller';
 
 type Id = { Params: { id: string } };
 
-// Todos os endpoints de usuário exigem autenticação.
-// Controle granular por role (ADMIN-only) será adicionado aqui futuramente.
+const adminOnly = { preHandler: [authenticate, authorizeAdmin] };
+
 export async function userRoutes(app: FastifyInstance) {
-  app.get(       '/',    { preHandler: [authenticate] }, listUsersHandler);
-  app.get<Id>(   '/:id', { preHandler: [authenticate] }, getUserByIdHandler);
-  app.post(      '/',    { preHandler: [authenticate] }, createUserHandler);
-  app.patch<Id>( '/:id', { preHandler: [authenticate] }, updateUserHandler);
+  app.get(         '/',    adminOnly, listUsersHandler);
+  app.get<Id>(     '/:id', adminOnly, getUserByIdHandler);
+  app.post(        '/',    adminOnly, createUserHandler);
+  app.patch<Id>(   '/:id', adminOnly, updateUserHandler);
+  app.delete<Id>(  '/:id', adminOnly, deleteUserHandler);
 }

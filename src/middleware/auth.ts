@@ -43,3 +43,12 @@ export async function authenticate(
     throw new AppError(401, 'Token inválido ou expirado');
   }
 }
+
+export async function authorizeAdmin(
+  request: FastifyRequest,
+  _reply: FastifyReply,
+): Promise<void> {
+  if (request.user?.role !== 'ADMIN') {
+    throw new AppError(403, 'Acesso restrito a administradores');
+  }
+}

@@ -74,3 +74,14 @@ export async function updateAuthor(id: string, data: UpdateAuthorInput) {
 
   return prisma.author.update({ where: { id }, data });
 }
+
+export async function deleteAuthor(id: string) {
+  await getAuthorById(id);
+
+  const count = await prisma.article.count({ where: { authorId: id } });
+  if (count > 0) {
+    throw new AppError(409, `Não é possível remover: autor possui ${count} notícia(s)`);
+  }
+
+  await prisma.author.delete({ where: { id } });
+}

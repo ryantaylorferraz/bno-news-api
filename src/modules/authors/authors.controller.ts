@@ -5,6 +5,7 @@ import {
   getAuthorById,
   createAuthor,
   updateAuthor,
+  deleteAuthor,
   CreateAuthorSchema,
   UpdateAuthorSchema,
 } from './authors.service';
@@ -41,4 +42,12 @@ export async function updateAuthorHandler(
 ) {
   const input = UpdateAuthorSchema.parse(request.body);
   return reply.send(await updateAuthor(request.params.id, input));
+}
+
+export async function deleteAuthorHandler(
+  request: FastifyRequest<{ Params: IdParams }>,
+  reply: FastifyReply,
+) {
+  await deleteAuthor(request.params.id);
+  return reply.status(204).send();
 }

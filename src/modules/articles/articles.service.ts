@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ArticleStatus, Prisma } from '@prisma/client';
+import { ArticleStatus } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { AppError } from '../../errors/AppError';
 
