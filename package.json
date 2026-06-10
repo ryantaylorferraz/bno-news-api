@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "BNO News — Backend API (Fastify + Prisma + PostgreSQL)",
   "main": "dist/server.js",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
