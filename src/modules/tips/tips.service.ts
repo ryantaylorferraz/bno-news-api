@@ -26,7 +26,10 @@ export type UpdateTipStatusInput = z.infer<typeof UpdateTipStatusSchema>;
 // ── Operações ─────────────────────────────────────────────────────────────────
 
 export async function createTip(data: CreateTipInput) {
-  return prisma.tip.create({ data });
+  const sanitized = data.anonymous
+    ? { ...data, name: null, email: null, phone: null }
+    : data;
+  return prisma.tip.create({ data: sanitized });
 }
 
 export async function listTips(params: {
@@ -34,7 +37,7 @@ export async function listTips(params: {
   page?:   number;
   limit?:  number;
 }) {
-  const { status, page = 1, limit = 30 } = params;
+  const { status, page = 1, limit = 20 } = params;
   const where = status ? { status } : {};
 
   const [data, total] = await Promise.all([
