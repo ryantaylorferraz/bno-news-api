@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TipStatus } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { AppError } from '../../errors/AppError';
+import { sendNewTipNotification } from '../../lib/email';
 
 // ── Schemas ───────────────────────────────────────────────────────────────────
 
@@ -29,7 +30,14 @@ export async function createTip(data: CreateTipInput) {
   const sanitized = data.anonymous
     ? { ...data, name: null, email: null, phone: null }
     : data;
-  return prisma.tip.create({ data: sanitized });
+  const tip = await prisma.tip.create({ data: sanitized });
+
+  // Fire-and-forget — falha no e-mail não deve quebrar a resposta
+  sendNewTipNotification(tip).catch(err =>
+    console.error('[email] falha ao notificar nova pauta:', err)
+  );
+
+  return tip;
 }
 
 export async function listTips(params: {
