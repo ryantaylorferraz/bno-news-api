@@ -8,6 +8,7 @@ import { userRoutes }     from '../modules/users/users.routes';
 import { slotRoutes }     from '../modules/slots/slots.routes';
 import { settingRoutes }  from '../modules/settings/settings.routes';
 import { adminRoutes }    from '../modules/admin/admin.routes';
+import { tipRoutes }      from '../modules/tips/tips.routes';
 
 export async function routes(app: FastifyInstance) {
   // ── Infraestrutura ────────────────────────────────────────────────────────
@@ -24,4 +25,5 @@ export async function routes(app: FastifyInstance) {
   app.register(slotRoutes,     { prefix: '/slots'      });
   app.register(settingRoutes,  { prefix: '/settings'   });
   app.register(adminRoutes,    { prefix: '/admin'      });
+  app.register(tipRoutes,      { prefix: '/tips'       });
 }
