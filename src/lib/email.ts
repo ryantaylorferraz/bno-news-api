@@ -1,21 +1,5 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import type { Tip } from '@prisma/client';
-
-function createTransporter() {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT ?? 587);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-
-  if (!host || !user || !pass) return null;
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
-}
 
 function tipHtml(tip: Tip): string {
   const adminUrl = `${process.env.FRONTEND_URL ?? 'http://localhost:3000'}/admin/pautas`;
@@ -121,14 +105,15 @@ function tipHtml(tip: Tip): string {
 }
 
 export async function sendNewTipNotification(tip: Tip): Promise<void> {
-  const transporter = createTransporter();
-  if (!transporter) return;
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
 
   const to = process.env.MAIL_TO;
   if (!to) return;
 
-  await transporter.sendMail({
-    from: `"BNO Redação" <${process.env.MAIL_FROM ?? process.env.SMTP_USER}>`,
+  const resend = new Resend(apiKey);
+  await resend.emails.send({
+    from: `BNO Redação <${process.env.MAIL_FROM}>`,
     to,
     subject: `[BNO] Nova pauta: ${tip.subject}`,
     html: tipHtml(tip),
