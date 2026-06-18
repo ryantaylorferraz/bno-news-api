@@ -58,6 +58,7 @@ model Article {
   body              String         @db.Text
   coverImageUrl     String?
   coverImageCaption String?
+  source            String?
   status            ArticleStatus  @default(DRAFT)
   breaking          Boolean        @default(false)
   views             Int            @default(0)
